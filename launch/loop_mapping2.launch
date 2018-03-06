@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="rviz" default="true" />
+  <arg name="play_bag" value="true" />
+  <arg name="bag_file" value="/home/zc/Desktop/a寒假程序/20180208_01.bag" />
+
+  <!-- 2018-03-01-12-22-10.bag -->
+  <!-- /home/everglow/parking_data/2018-03-01-12-29-57.bag -->
+
+  <!-- <node pkg="scan_filter" type="scan_filter" name="scan_filter" /> -->
+  <node pkg="scan_filter" type="scan_filter" name="scan_filter" />
+
+  <node pkg="parking_car" type="loop_mapping2" name="loop_mapping2" output="screen" >
+    <param name="active"               value="true"/>
+    <param name="use_scan"             value="true"/>
+    <param name="use_pcl"              value="false"/>
+
+    <param name="use_split_and_merge"    value="false"/>
+    <param name="circles_from_visibles"  value="true"/>
+    <param name="discard_converted_segments" value="false"/>
+    <param name="transform_coordinates"  value="false"/>
+
+    <param name="min_group_points"     value="5"/>
+
+    <param name="max_group_distance"   value="0.1"/>
+    <param name="distance_proportion"  value="0.00628"/>
+    <param name="max_split_distance"   value="0.2"/>
+    <param name="max_merge_separation" value="0.2"/>
+    <param name="max_merge_spread"     value="0.2"/>
+    <param name="max_circle_radius"    value="0.2"/>
+    <param name="radius_enlargement"   value="0.1"/>
+
+    <param name="angle_threshold_L"   value="-3.0368729"/>
+    <param name="angle_threshold_H"   value="3.05432619"/>
+
+    <param name="frame_id"             value="map"/>
+  </node>
+
+
+<group if="$(arg play_bag)">
+    <node name="player" pkg="rosbag" type="play" output="screen" args=" --clock -q $(arg bag_file)"/>
+  </group>
+
+<group if="$(arg rviz)">
+    <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find parking_car)/rviz_cfg/loop_mapping2.rviz" />
+  </group>
+
+
+</launch>

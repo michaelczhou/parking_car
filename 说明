@@ -1,0 +1,47 @@
+csc105内部学习使用，请勿外传！
+
+功能：程序处理2d scan数据，定位建图，可直接移植到3d数据定位建图。
+
+
+按时间顺序，test中有三个程序，都可以直接launch。学习的话可以按顺序看下来,因为写的时候也是按这个顺序一点一点改的。想偷懒可以直接看最后一个。
+
+ndt_mapping_2d.cpp
+演示了最简单的ndt方法
+
+loop_mapping.cpp
+演示了基于cartograph思想的方法。
+
+loop_mapping2.cpp
+基于loop_mapping.cpp，进行单元封装，进行结构调优，并且留出了graph优化接口。
+
+数据包为360度单线激光雷达，角度分辨率0.1度，探测距离30m，测距误差1cm。
+
+
+2018.2.3 徐晋鸿
+____
+
+
+data_pack 增加csc室内一楼数据
+
+算法增加ceres的submap之间闭环，submap完成后的小闭环没有加，可用于练习。
+在submap之间闭环的策略上还可以调整。
+
+外部增加了朱mf写的scan的filter，使用大段的稳定数据用于建图定位。
+2018.2.7 徐晋鸿
+————
+map_builder.hpp中
+addScan函数中修正了newScanGlobalPose的更新位置，每次调节submap全局位置后，newScanGlobalPose也要更新！
+
+增加每个submap建立完成后，修正submap的全局pose。
+
+增加addScan2函数，ceres闭环策略使用submap之间匹配，不使用最后那个单次扫描数据用于闭环帧。可修改loop_mapping2.cpp里mapBuilder.addScan2(newScan, globalPose);效果明显更好！
+
+
+2018.2.7晚 徐晋鸿
+————
+
+
+
+
+
+
